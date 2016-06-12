@@ -142,6 +142,20 @@
                                         <option value=3600>1<?php echo _('h'); ?></option>
                                         <option value=86400>1<?php echo _('d'); ?></option>
                                     </select>
+                                    <select id="feed-type" class="input-mini">
+                                        <option value=""><?php echo _('Select type'); ?></option>
+                                        <option value=1><?php echo _('state'); ?></option>
+                                        <option value=2><?php echo _('cumulative'); ?></option>
+                                        <option value=249><?php echo _('real-time'); ?></option>
+                                    </select>
+                                    <select id="feed-precision" class="input-mini">
+                                        <option value=""><?php echo _('Select precision'); ?></option>
+                                        <option value=0>0<?php echo _('%'); ?></option>
+                                        <option value=1>1<?php echo _('%'); ?></option>
+                                        <option value=2>2<?php echo _('%'); ?></option>
+                                        <option value=5>5<?php echo _('%'); ?></option>
+                                        <option value=10>10<?php echo _('%'); ?></option>
+                                    </select>
                                 </div>
                             </div>
                         </span>

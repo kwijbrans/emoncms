@@ -49,7 +49,8 @@
 
             if ($datatype == 0) $result = "Feed type or authentication not valid";
             if ($datatype == 1) {
-            	if ($engine==2) 
+            	$meta=$feed->get_meta($feedid);
+            	if ($engine==2 && $meta->type==1) 
             		$route->action = 'stategraph';
             	else 
             		$route->action = 'graph';

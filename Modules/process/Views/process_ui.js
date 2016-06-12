@@ -266,7 +266,19 @@ var processlist_ui =
       var engine = $(this).val();
       $("#feed-interval").hide();
       if (engine==6 || engine==5 || engine==4 || engine==1) $("#feed-interval").show();
-      
+      if (engine==2) {
+    	  $("#feed-type").show();
+      	  var type=$("#feed-type").val();
+	    
+      	  if (type==2) {
+	    	$("#feed-precision").show();
+	      } else {
+	    	$("#feed-precision").hide();
+	      }
+      } else {
+    	  $("#feed-type").hide();
+    	  $("#feed-precision").hide();
+      }
       var processid = $("#process-select").val();
       var datatype = processlist_ui.processlist[processid][4]; // 1:REALTIME, 2:DAILY, 3:HISTOGRAM
       // If the datatype is daily then the interval is fixed to 3600s x 24h = 1d and user cant select other
@@ -281,6 +293,14 @@ var processlist_ui =
         $("#feed-interval option").prop('disabled', false);  //for IE show
         $("#feed-interval").val(10);   // default to 10s
       } 
+    });
+    $("#processlist-ui #feed-type").change(function(){
+    	var type=$(this).val();
+    	if (type==2) {
+    		$("#feed-precision").show();
+    	} else {
+    		$("#feed-precision").hide();
+    	}
     });
 
     $('#processlist-ui #process-add, #processlist-ui #process-edit').click(function(){
@@ -313,7 +333,7 @@ var processlist_ui =
             var datatype = process[4];
 
             var options = {};
-            options = {interval:$('#feed-interval').val()};
+            options = {interval:$('#feed-interval').val(),type:$('#feed-type').val(),precision:$('#feed-precision').val()};
 
             if (feedname == '') {
               alert('ERROR: Please enter a feed name');
@@ -411,9 +431,13 @@ var processlist_ui =
         //var engines = processlist_ui.processlist[processid][6];   // 0:MYSQL, 5:PHPFINA, 6:PHPFIWA
         //if (engines.length > 1) 
           $("#feed-engine, .feed-engine-label").show();
+          $("#feed-type").hide();
+          $("#feed-precision").hide();
       } else {
         $("#new-feed-name").hide();
         $("#feed-interval").hide();
+        $("#feed-type").hide();
+        $("#feed-precision").hide();
         $("#feed-engine, .feed-engine-label").hide(); 
       }
     });
@@ -759,6 +783,7 @@ var processlist_ui =
   'load': function(contextid,contextprocesslist,contextname,newfeedname,newfeedtag){
     this.contextid = contextid;
     this.contextprocesslist = contextprocesslist;
+    $("feed-type").hide();
     $("#contextname").html(contextname);
     $("#new-feed-name").val(newfeedname);
     $("#new-feed-tag").val(newfeedtag);

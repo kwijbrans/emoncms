@@ -114,7 +114,11 @@ class Feed
             $options = array();
             if ($engine==Engine::PHPFINA) $options['interval'] = (int) $options_in->interval;
             if ($engine==Engine::PHPFIWA) $options['interval'] = (int) $options_in->interval;
-
+            if ($engine==Engine::PHPTIMESERIES) {
+            	$options['type'] = (int) $options_in->type;
+            	$options['precision'] = (int) $options_in->precision;
+            }
+            
             $engineresult = false;
             if ($datatype==DataType::HISTOGRAM) {
                 $engineresult = $this->EngineClass("histogram")->create($feedid,$options);
@@ -430,7 +434,9 @@ class Feed
         return $lastvalue['value'];
     }
 
-    public function get_data($feedid,$start,$end,$outinterval,$skipmissing,$limitinterval)
+    
+    // $mode: 0 = raw data, 1 = difference, 2 = W from kWh, 3 = derivative
+    public function get_data($feedid,$start,$end,$outinterval,$skipmissing,$limitinterval,$mode=0)
     {
         $feedid = (int) $feedid;
         if ($end<=$start) return array('success'=>false, 'message'=>"Request end time before start time");
@@ -471,7 +477,30 @@ class Feed
                     $data = array_merge($data, $bufferdata);
                 }
             }
-            
+        }
+        switch ($mode) {
+        	case 1:
+        		$newdata=array();
+        		for ($z=1; $z<count($data); $z++) {
+        			$newdata[$z]=array($data[$z][0],$data[$z][1]-$data[$z-1][1]);
+        		}
+        		$data=$newdata;
+        		break;
+        	case 3:
+        		$newdata=array();
+        		for ($z=1; $z<count($data); $z++) {
+        			$newdata[]=array($data[$z][0],($data[$z][1]-$data[$z-1][1])/($data[$z][0]-$data[$z-1][0])*1000);
+        		}
+        		$data=$newdata;
+        		break;
+        	case 2:
+        		$newdata=array();
+        		for ($z=1; $z<count($data); $z++) {
+        			$newdata[]=array($data[$z][0],($data[$z][1]-$data[$z-1][1])/($data[$z][0]-$data[$z-1][0])*3600000000.0);
+        		}
+        		$data=$newdata;
+        	default:
+        		break;
         }
 
         return $data;

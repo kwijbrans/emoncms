@@ -78,11 +78,14 @@ function feed_controller()
                     else if ($route->action == 'data') {
                         $skipmissing = 1;
                         $limitinterval = 1;
+                        $mode=0;
                         if (isset($_GET['skipmissing']) && $_GET['skipmissing']==0) $skipmissing = 0;
                         if (isset($_GET['limitinterval']) && $_GET['limitinterval']==0) $limitinterval = 0;
+                        if (isset($_GET['mode'])) $mode = (int)$_GET['mode'];
+                        
                         
                         if (isset($_GET['interval'])) {
-                            $result = $feed->get_data($feedid,get('start'),get('end'),get('interval'),$skipmissing,$limitinterval);
+                           	$result = $feed->get_data($feedid,get('start'),get('end'),get('interval'),$skipmissing,$limitinterval, $mode);
                         } else if (isset($_GET['mode'])) {
                             $result = $feed->get_data_DMY($feedid,get('start'),get('end'),get('mode'));
                         }
