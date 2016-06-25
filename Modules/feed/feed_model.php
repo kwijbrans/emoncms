@@ -59,6 +59,12 @@ class Feed
             } else if ($e == (string)Engine::PHPTIMESERIES) {
                     require "Modules/feed/engine/PHPTimeSeries.php";    // Variable interval no averaging
                     $engines[$e] =  new PHPTimeSeries($this->settings['phptimeseries']);
+            } else if ($e == (string)Engine::PHPSWING) {
+                    require "Modules/feed/engine/PHPSwing.php";    // Variable interval no averaging
+                    $engines[$e] =  new PHPSwing($this->redis, $this->settings['phptimeseries']);
+            } else if ($e == (string)Engine::PHPSTATE) {
+                    require "Modules/feed/engine/PHPState.php";    // Variable interval no averaging
+                    $engines[$e] =  new PHPState($this->settings['phptimeseries']);
             } else if ($e == (string)Engine::MYSQLMEMORY) {
                     require_once "Modules/feed/engine/MysqlTimeSeries.php";  // Mysql engine
                     require "Modules/feed/engine/MysqlMemory.php";           // Mysql Memory engine
@@ -114,9 +120,9 @@ class Feed
             $options = array();
             if ($engine==Engine::PHPFINA) $options['interval'] = (int) $options_in->interval;
             if ($engine==Engine::PHPFIWA) $options['interval'] = (int) $options_in->interval;
-            if ($engine==Engine::PHPTIMESERIES) {
-            	$options['type'] = (int) $options_in->type;
-            	$options['precision'] = (int) $options_in->precision;
+            if ($engine==Engine::PHPSWING) {
+            	$options['epsilon'] = floatval($options_in->epsilon);
+            	$options['percentage'] = floatval($options_in->percentage);
             }
             
             $engineresult = false;
@@ -717,7 +723,7 @@ class Feed
 
     public function insert_data($feedid,$updatetime,$feedtime,$value,$arg=null)
     {
-        $this->log->info("insert_data() feedid=$feedid updatetime=$updatetime feedtime=$feedtime value=$value arg=$arg");
+        //$this->log->info("insert_data() feedid=$feedid updatetime=$updatetime feedtime=$feedtime value=$value arg=$arg");
         $feedid = (int) $feedid;
         if (!$this->exist($feedid)) return array('success'=>false, 'message'=>'Feed does not exist');
 

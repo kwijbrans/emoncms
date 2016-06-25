@@ -121,10 +121,11 @@
                                         <option value=6>PHPFIWA Fixed Interval With Averaging</option>
                                         <option value=5>PHPFINA Fixed Interval No Averaging</option>
                                         <option value=2>PHPTIMESERIES Variable Interval No Averaging</option>
+                                        <option value=10>PHPSTATE State changes</option>
+                                        <option value=11>PHPSWING PLA using Swing algorithm</option>
                                         <option value=0>MYSQL TimeSeries</option>
                                         <option value=8>MYSQL Memory (RAM data lost on power off)</option>
                                     </select>
-
                                     <select id="feed-interval" class="input-mini">
                                         <option value=""><?php echo _('Select interval'); ?></option>
                                         <option value=5>5<?php echo _('s'); ?></option>
@@ -142,20 +143,8 @@
                                         <option value=3600>1<?php echo _('h'); ?></option>
                                         <option value=86400>1<?php echo _('d'); ?></option>
                                     </select>
-                                    <select id="feed-type" class="input-mini">
-                                        <option value=""><?php echo _('Select type'); ?></option>
-                                        <option value=1><?php echo _('state'); ?></option>
-                                        <option value=2><?php echo _('cumulative'); ?></option>
-                                        <option value=249><?php echo _('real-time'); ?></option>
-                                    </select>
-                                    <select id="feed-precision" class="input-mini">
-                                        <option value=""><?php echo _('Select precision'); ?></option>
-                                        <option value=0>0<?php echo _('%'); ?></option>
-                                        <option value=1>1<?php echo _('%'); ?></option>
-                                        <option value=2>2<?php echo _('%'); ?></option>
-                                        <option value=5>5<?php echo _('%'); ?></option>
-                                        <option value=10>10<?php echo _('%'); ?></option>
-                                    </select>
+                                    <input id="feed-epsilon" class="input-mini" value="0.0"/>
+                                    <input id="feed-percentage" class="input-mini" value="0.0"/>%
                                 </div>
                             </div>
                         </span>

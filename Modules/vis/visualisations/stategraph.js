@@ -133,13 +133,19 @@ var app_graph = {
                 else
                 { 
                     var options = {
-                        lines: { fill: false },
+                        lines: { fill: true },
                         xaxis: { 
                             mode: "time", timezone: "browser", 
                             min: app_graph.start, max: app_graph.end
                         },
                         grid: {hoverable: true, clickable: true},
-                        selection: { mode: "x" }
+                        selection: { mode: "x" },
+                        yaxis: {
+                        	min: 0,
+                        	max: 5,
+                        	tickSize: 2,
+                        	ticks: [[0, "off"], [1, "on"]]
+                        }
                     }
                       
 	                  var outputdata = [];

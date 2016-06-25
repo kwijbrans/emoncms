@@ -265,19 +265,12 @@ var processlist_ui =
     $("#processlist-ui #feed-engine").change(function(){
       var engine = $(this).val();
       $("#feed-interval").hide();
-      if (engine==6 || engine==5 || engine==4 || engine==1) $("#feed-interval").show();
-      if (engine==2) {
-    	  $("#feed-type").show();
-      	  var type=$("#feed-type").val();
-	    
-      	  if (type==2) {
-	    	$("#feed-precision").show();
-	      } else {
-	    	$("#feed-precision").hide();
-	      }
-      } else {
-    	  $("#feed-type").hide();
-    	  $("#feed-precision").hide();
+  	  $("#feed-epsilon").hide();
+  	  $("#feed-percentage").hide();
+  	  if (engine==6 || engine==5 || engine==4 || engine==1) $("#feed-interval").show();
+      if (engine==11) {
+    	  $("#feed-epsilon").show();
+    	  $("#feed-percentage").show();
       }
       var processid = $("#process-select").val();
       var datatype = processlist_ui.processlist[processid][4]; // 1:REALTIME, 2:DAILY, 3:HISTOGRAM
@@ -293,14 +286,6 @@ var processlist_ui =
         $("#feed-interval option").prop('disabled', false);  //for IE show
         $("#feed-interval").val(10);   // default to 10s
       } 
-    });
-    $("#processlist-ui #feed-type").change(function(){
-    	var type=$(this).val();
-    	if (type==2) {
-    		$("#feed-precision").show();
-    	} else {
-    		$("#feed-precision").hide();
-    	}
     });
 
     $('#processlist-ui #process-add, #processlist-ui #process-edit').click(function(){
@@ -333,7 +318,7 @@ var processlist_ui =
             var datatype = process[4];
 
             var options = {};
-            options = {interval:$('#feed-interval').val(),type:$('#feed-type').val(),precision:$('#feed-precision').val()};
+            options = {interval:$('#feed-interval').val(),epsilon:$('#feed-epsilon').val(), percentage:$('#feed-percentage').val()};
 
             if (feedname == '') {
               alert('ERROR: Please enter a feed name');
